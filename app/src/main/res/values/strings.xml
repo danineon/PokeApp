@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PokeApp</string>
+    <string name="log_in">LOG-IN</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="password">Password</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="email">Email</string>
+    <string name="app">App</string>
+    <string name="poke">Poké</string>
+    <string name="pokeball_logo">Pokeball Logo</string>
 </resources>
