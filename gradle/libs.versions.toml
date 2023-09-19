@@ -11,6 +11,8 @@ lifecycle-runtime-ktx = "2.6.2"
 material-icons-extended = "1.5.1"
 org-jetbrains-kotlin-android = "1.9.10"
 version-catalog-update = "0.8.1"
+googleServices = "4.3.15"
+firebaseBom = "32.3.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -28,9 +30,12 @@ ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+com-google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+com-google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes" }
 nl-littlerobots-version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+com-google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
