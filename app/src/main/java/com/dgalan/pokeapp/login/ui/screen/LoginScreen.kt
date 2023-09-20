@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.ui.screens
+package com.dgalan.pokeapp.login.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
