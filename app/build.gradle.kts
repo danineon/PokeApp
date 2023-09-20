@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.com.google.gms.google.services)
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -21,17 +23,34 @@ android {
         }
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "debug1"
+            keyAlias = "debug1"
+            keyPassword = "debug1"
+        }
+
+        create("release") {
+            storeFile = file("release.keystore")
+            storePassword = "release"
+            keyAlias = "release"
+            keyPassword = "release"
+        }
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
             applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.getByName("debug")
         }
         release {
-            //Cambiar a true al configurar Proguard
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -69,6 +88,10 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(platform(libs.com.google.firebase.bom))
+    implementation(libs.com.google.firebase.auth.ktx)
+    ksp(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
