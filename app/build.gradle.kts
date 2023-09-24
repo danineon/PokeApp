@@ -94,6 +94,8 @@ dependencies {
     implementation(platform(libs.com.google.firebase.bom))
     implementation(libs.com.google.firebase.auth.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     kapt(libs.hilt.android.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
