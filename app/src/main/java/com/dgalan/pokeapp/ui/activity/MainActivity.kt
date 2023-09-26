@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp
+package com.dgalan.pokeapp.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
