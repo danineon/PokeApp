@@ -8,14 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.dgalan.pokeapp.R
 import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.EmailChanged
@@ -47,17 +45,17 @@ import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordChanged
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordVisibilityChanged
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.ResetResourceState
 import com.dgalan.pokeapp.login.ui.viewmodel.LoginViewModel
+import com.dgalan.pokeapp.ui.designsystem.DSButton
 import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
-import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.ui.navigation.Destinations.RegisterScreen
 import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
 import com.dgalan.pokeapp.utils.state.Resource.Success
 
 @Composable
-fun LoginScreen() {
-    val loginViewModel = hiltViewModel<LoginViewModel>()
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
     val loginUIState by loginViewModel.loginUIState.collectAsStateWithLifecycle()
     val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -83,6 +81,7 @@ fun LoginScreen() {
         )
         Spacer(modifier = Modifier.size(24.dp))
         LoginButton(loginOnClick = { loginViewModel.onEvent(LoginButtonClicked) })
+        RegisterButton(registerOnClick = { navController.navigate(RegisterScreen.route) })
 
         when (loginFlow) {
             is Error -> {
@@ -99,7 +98,8 @@ fun LoginScreen() {
                 loginViewModel.onEvent(ResetResourceState)
             }
 
-            is Idle -> { /* do nothing */
+            is Idle -> {
+                /* do nothing */
             }
         }
     }
@@ -173,22 +173,18 @@ fun PasswordField(
 
 @Composable
 fun LoginButton(loginOnClick: () -> Unit) {
-    Button(
+    DSButton(
         onClick = loginOnClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 72.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFED1A25),
-            contentColor = Color.White
-        ),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Text(
-            text = stringResource(string.log_in),
-            style = AppTypography.bodyMedium,
-        )
-    }
+        text = stringResource(string.log_in)
+    )
+}
+
+@Composable
+fun RegisterButton(registerOnClick: () -> Unit) {
+    DSButton(
+        onClick = registerOnClick,
+        text = stringResource(string.sign_up)
+    )
 }
 
 @Composable
@@ -219,18 +215,8 @@ fun PasswordLabel() {
     Text(text = stringResource(string.password))
 }
 
-@Composable
-fun EmailSupportingText() {
-    Text(text = stringResource(string.this_is_an_invalid_email))
-}
-
-@Composable
-fun PasswordSupportingText() {
-    Text(text = stringResource(string.the_password_must_be_at_least_6_characters_long))
-}
-
 @Preview(showSystemUi = true)
 @Composable
 fun LoginScreenPrev() {
-    LoginScreen()
+    LoginScreen(rememberNavController())
 }

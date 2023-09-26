@@ -1,7 +1,7 @@
-package com.dgalan.pokeapp.login.data.di
+package com.dgalan.pokeapp.utils.di
 
-import com.dgalan.pokeapp.login.data.FirebaseAuthRepositoryContract
-import com.dgalan.pokeapp.login.data.repository.FirebaseAuthRepository
+import com.dgalan.pokeapp.firebasedata.FirebaseAuthRepositoryContract
+import com.dgalan.pokeapp.firebasedata.repository.FirebaseAuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
