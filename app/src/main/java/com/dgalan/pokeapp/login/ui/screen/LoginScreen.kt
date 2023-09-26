@@ -1,5 +1,6 @@
 package com.dgalan.pokeapp.login.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -39,16 +41,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dgalan.pokeapp.R
 import com.dgalan.pokeapp.R.string
+import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.EmailChanged
+import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.LoginButtonClicked
+import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordChanged
+import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordVisibilityChanged
+import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.ResetResourceState
 import com.dgalan.pokeapp.login.ui.viewmodel.LoginViewModel
+import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
 import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.utils.state.Resource.Error
+import com.dgalan.pokeapp.utils.state.Resource.Idle
+import com.dgalan.pokeapp.utils.state.Resource.Loading
+import com.dgalan.pokeapp.utils.state.Resource.Success
 
 @Composable
 fun LoginScreen() {
     val loginViewModel = hiltViewModel<LoginViewModel>()
-    val email by loginViewModel.email.collectAsStateWithLifecycle()
-    val password by loginViewModel.password.collectAsStateWithLifecycle()
-    val isPasswordVisible by loginViewModel.isPasswordVisible.collectAsStateWithLifecycle()
+    val loginUIState by loginViewModel.loginUIState.collectAsStateWithLifecycle()
+    val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     Column(
         Modifier
             .fillMaxSize()
@@ -59,18 +71,37 @@ fun LoginScreen() {
         AppName()
         Spacer(modifier = Modifier.size(24.dp))
         EmailField(
-            email = email,
-            onEmailValueChange = loginViewModel::onEmailValueChange
+            email = loginUIState.email,
+            onEmailValueChange = { loginViewModel.onEvent(EmailChanged(it)) }
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
-            password = password,
-            onPasswordValueChange = loginViewModel::onPasswordValueChange,
-            trailingIconOnClick = loginViewModel::onVisibilityButtonClick,
-            isPasswordVisible = isPasswordVisible
+            password = loginUIState.password,
+            onPasswordValueChange = { loginViewModel.onEvent(PasswordChanged(it)) },
+            trailingIconOnClick = { loginViewModel.onEvent(PasswordVisibilityChanged(!loginUIState.isPasswordVisible)) },
+            isPasswordVisible = loginUIState.isPasswordVisible
         )
         Spacer(modifier = Modifier.size(24.dp))
-        LoginButton { /* TODO */ }
+        LoginButton(loginOnClick = { loginViewModel.onEvent(LoginButtonClicked) })
+
+        when (loginFlow) {
+            is Error -> {
+                Toast.makeText(context, (loginFlow as Error).exception.message, Toast.LENGTH_LONG).show()
+                loginViewModel.onEvent(ResetResourceState)
+            }
+
+            is Loading -> {
+                DSLoadingDialog()
+            }
+
+            is Success -> {
+                Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
+                loginViewModel.onEvent(ResetResourceState)
+            }
+
+            is Idle -> { /* do nothing */
+            }
+        }
     }
 }
 
@@ -78,7 +109,7 @@ fun LoginScreen() {
 fun LogoImage() {
     Image(
         painter = painterResource(id = R.drawable.ic_logo_pokeball),
-        contentDescription = stringResource(R.string.pokeball_logo),
+        contentDescription = stringResource(string.pokeball_logo),
         Modifier
             .offset(
                 x = LocalConfiguration.current.screenWidthDp.dp / 2,
@@ -92,10 +123,10 @@ fun LogoImage() {
 fun AppName() {
     val text = buildAnnotatedString {
         withStyle(style = SpanStyle(color = Color(0xFFED1A25))) {
-            append(stringResource(R.string.poke))
+            append(stringResource(string.poke))
         }
         withStyle(style = SpanStyle(color = Color.White)) {
-            append(stringResource(R.string.app))
+            append(stringResource(string.app))
         }
     }
     Text(
@@ -154,7 +185,7 @@ fun LoginButton(loginOnClick: () -> Unit) {
         shape = RoundedCornerShape(16.dp)
     ) {
         Text(
-            text = stringResource(R.string.log_in),
+            text = stringResource(string.log_in),
             style = AppTypography.bodyMedium,
         )
     }
@@ -180,22 +211,22 @@ fun PasswordLeadingIcon() {
 
 @Composable
 fun EmailLabel() {
-    Text(text = stringResource(R.string.email))
+    Text(text = stringResource(string.email))
 }
 
 @Composable
 fun PasswordLabel() {
-    Text(text = stringResource(R.string.password))
+    Text(text = stringResource(string.password))
 }
 
 @Composable
 fun EmailSupportingText() {
-    Text(text = stringResource(R.string.this_is_an_invalid_email))
+    Text(text = stringResource(string.this_is_an_invalid_email))
 }
 
 @Composable
 fun PasswordSupportingText() {
-    Text(text = stringResource(R.string.the_password_must_be_at_least_6_characters_long))
+    Text(text = stringResource(string.the_password_must_be_at_least_6_characters_long))
 }
 
 @Preview(showSystemUi = true)
