@@ -14,4 +14,9 @@
     <string name="this_is_an_invalid_email">This is an invalid email</string>
     <string name="the_password_must_be_at_least_6_characters_long">The password must be at least 6 characters long</string>
     <string name="visibility_icon">Visibility Icon</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="person_icon">Person Icon</string>
+    <string name="name">Name</string>
 </resources>

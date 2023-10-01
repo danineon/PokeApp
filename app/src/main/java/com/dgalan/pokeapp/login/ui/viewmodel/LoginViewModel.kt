@@ -2,7 +2,7 @@ package com.dgalan.pokeapp.login.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dgalan.pokeapp.login.data.repository.FirebaseAuthRepository
+import com.dgalan.pokeapp.firebasedata.repository.FirebaseAuthRepository
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.EmailChanged
 import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.LoginButtonClicked
@@ -43,7 +43,9 @@ class LoginViewModel @Inject constructor(
                 _loginUIState.value = _loginUIState.value.copy(isPasswordVisible = event.isPasswordVisible)
 
             is LoginButtonClicked ->
-                loginUserInFirebase(loginUIState.value.email, loginUIState.value.password)
+                loginUIState.value.run {
+                    loginUserInFirebase(email, password)
+                }
 
             is ResetResourceState ->
                 _loginFlow.value = Idle
