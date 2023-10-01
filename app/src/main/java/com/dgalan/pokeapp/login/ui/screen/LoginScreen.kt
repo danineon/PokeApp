@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Key
@@ -18,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,7 +51,8 @@ import com.dgalan.pokeapp.login.ui.viewmodel.LoginViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSButton
 import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
-import com.dgalan.pokeapp.ui.navigation.Destinations.RegisterScreen
+import com.dgalan.pokeapp.ui.navigation.Screens.RegisterScreen
+import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
@@ -58,7 +62,9 @@ import com.dgalan.pokeapp.utils.state.Resource.Success
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
     val loginUIState by loginViewModel.loginUIState.collectAsStateWithLifecycle()
     val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
+    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    DisableBackOnInitScreen()
     Column(
         Modifier
             .fillMaxSize()
@@ -70,14 +76,16 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
         Spacer(modifier = Modifier.size(24.dp))
         EmailField(
             email = loginUIState.email,
-            onEmailValueChange = { loginViewModel.onEvent(EmailChanged(it)) }
+            onEmailValueChange = { loginViewModel.onEvent(EmailChanged(it)) },
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
             password = loginUIState.password,
             onPasswordValueChange = { loginViewModel.onEvent(PasswordChanged(it)) },
             trailingIconOnClick = { loginViewModel.onEvent(PasswordVisibilityChanged(!loginUIState.isPasswordVisible)) },
-            isPasswordVisible = loginUIState.isPasswordVisible
+            isPasswordVisible = loginUIState.isPasswordVisible,
+            onKeyBoardDone = { focusManager.clearFocus() }
         )
         Spacer(modifier = Modifier.size(24.dp))
         LoginButton(loginOnClick = { loginViewModel.onEvent(LoginButtonClicked) })
@@ -85,7 +93,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
 
         when (loginFlow) {
             is Error -> {
-                Toast.makeText(context, (loginFlow as Error).exception.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, (loginFlow as Error).errorMessage, Toast.LENGTH_LONG).show()
                 loginViewModel.onEvent(ResetResourceState)
             }
 
@@ -141,7 +149,8 @@ fun AppName() {
 @Composable
 fun EmailField(
     email: String,
-    onEmailValueChange: (String) -> Unit
+    onEmailValueChange: (String) -> Unit,
+    onKeyBoardDone: (KeyboardActionScope) -> Unit
 ) {
     DSTextField(
         inputText = email,
@@ -149,7 +158,8 @@ fun EmailField(
         label = { EmailLabel() },
         leadingIcon = { EmailLeadingIcon() },
         keyboardType = KeyboardType.Email,
-        trailingIconOnClick = { /* No has trailing icon */ }
+        trailingIconOnClick = { /* No has trailing icon */ },
+        onKeyboardDone = onKeyBoardDone
     )
 }
 
@@ -158,7 +168,8 @@ fun PasswordField(
     password: String,
     onPasswordValueChange: (String) -> Unit,
     trailingIconOnClick: () -> Unit,
-    isPasswordVisible: Boolean
+    isPasswordVisible: Boolean,
+    onKeyBoardDone: (KeyboardActionScope) -> Unit
 ) {
     DSTextField(
         inputText = password,
@@ -167,7 +178,8 @@ fun PasswordField(
         leadingIcon = { PasswordLeadingIcon() },
         keyboardType = KeyboardType.Password,
         trailingIconOnClick = trailingIconOnClick,
-        isPasswordVisible = isPasswordVisible
+        isPasswordVisible = isPasswordVisible,
+        onKeyboardDone = onKeyBoardDone
     )
 }
 
