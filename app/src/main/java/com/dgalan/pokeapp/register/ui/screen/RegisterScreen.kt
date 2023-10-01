@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Key
@@ -15,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +43,7 @@ import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSText
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
 import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
@@ -49,7 +53,9 @@ import com.dgalan.pokeapp.utils.state.Resource.Success
 fun RegisterScreen(navController: NavController, registerViewModel: RegisterViewModel = hiltViewModel()) {
     val registerUIState by registerViewModel.registerUIState.collectAsStateWithLifecycle()
     val registerFlow by registerViewModel.registerFlow.collectAsStateWithLifecycle()
+    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    DisableBackOnInitScreen()
     Column(
         Modifier
             .fillMaxSize()
@@ -63,12 +69,14 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
         Spacer(modifier = Modifier.size(24.dp))
         NameField(
             name = registerUIState.name,
-            onEmailValueChange = { registerViewModel.onEvent(NameChanged(it)) }
+            onEmailValueChange = { registerViewModel.onEvent(NameChanged(it)) },
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
         )
         Spacer(modifier = Modifier.size(8.dp))
         EmailField(
             email = registerUIState.email,
-            onEmailValueChange = { registerViewModel.onEvent(EmailChanged(it)) }
+            onEmailValueChange = { registerViewModel.onEvent(EmailChanged(it)) },
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
@@ -76,7 +84,8 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             onPasswordValueChange = { registerViewModel.onEvent(PasswordChanged(it)) },
             trailingIconOnClick = { registerViewModel.onEvent(PasswordVisibilityChanged(!registerUIState.isPasswordVisible)) },
             isPasswordVisible = registerUIState.isPasswordVisible,
-            label = { PasswordLabel() }
+            label = { PasswordLabel() },
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
@@ -84,9 +93,9 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             onPasswordValueChange = { registerViewModel.onEvent(ConfirmPasswordChanged(it)) },
             trailingIconOnClick = { registerViewModel.onEvent(ConfirmPasswordVisibilityChanged(!registerUIState.isConfirmPasswordVisible)) },
             isPasswordVisible = registerUIState.isConfirmPasswordVisible,
-            label = { ConfirmPasswordLabel() }
+            label = { ConfirmPasswordLabel() },
+            onKeyBoardDone = { focusManager.clearFocus() }
         )
-        Spacer(modifier = Modifier.size(8.dp))
         Spacer(modifier = Modifier.size(24.dp))
         RegisterButton(registerOnClick = { registerViewModel.onEvent(RegisterButtonClicked) })
 
@@ -103,6 +112,7 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             is Success -> {
                 Toast.makeText(context, "Register success", Toast.LENGTH_LONG).show()
                 registerViewModel.onEvent(ResetResourceState)
+                navController.navigateUp()
             }
 
             Idle -> {
@@ -115,7 +125,8 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
 @Composable
 fun NameField(
     name: String,
-    onEmailValueChange: (String) -> Unit
+    onEmailValueChange: (String) -> Unit,
+    onKeyBoardDone: (KeyboardActionScope) -> Unit
 ) {
     DSTextField(
         inputText = name,
@@ -123,14 +134,16 @@ fun NameField(
         label = { NameLabel() },
         leadingIcon = { NameLeadingIcon() },
         keyboardType = KeyboardType.Email,
-        trailingIconOnClick = { /* No has trailing icon */ }
+        trailingIconOnClick = { /* No has trailing icon */ },
+        onKeyboardDone = onKeyBoardDone
     )
 }
 
 @Composable
 fun EmailField(
     email: String,
-    onEmailValueChange: (String) -> Unit
+    onEmailValueChange: (String) -> Unit,
+    onKeyBoardDone: (KeyboardActionScope) -> Unit
 ) {
     DSTextField(
         inputText = email,
@@ -138,7 +151,8 @@ fun EmailField(
         label = { EmailLabel() },
         leadingIcon = { EmailLeadingIcon() },
         keyboardType = KeyboardType.Email,
-        trailingIconOnClick = { /* No has trailing icon */ }
+        trailingIconOnClick = { /* No has trailing icon */ },
+        onKeyboardDone = onKeyBoardDone
     )
 }
 
@@ -148,7 +162,8 @@ fun PasswordField(
     onPasswordValueChange: (String) -> Unit,
     trailingIconOnClick: () -> Unit,
     isPasswordVisible: Boolean,
-    label: @Composable () -> Unit
+    label: @Composable () -> Unit,
+    onKeyBoardDone: (KeyboardActionScope) -> Unit
 ) {
     DSTextField(
         inputText = password,
@@ -157,7 +172,8 @@ fun PasswordField(
         leadingIcon = { PasswordLeadingIcon() },
         keyboardType = KeyboardType.Password,
         trailingIconOnClick = trailingIconOnClick,
-        isPasswordVisible = isPasswordVisible
+        isPasswordVisible = isPasswordVisible,
+        onKeyboardDone = onKeyBoardDone
     )
 }
 
