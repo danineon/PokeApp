@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.dgalan.pokeapp.ui.navigation.Navigation
+import com.dgalan.pokeapp.ui.navigation.SetWindowBackgroundColor
 import com.dgalan.pokeapp.ui.theme.PokeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PokeAppTheme {
+                SetWindowBackgroundColor()
                 Navigation()
             }
         }
