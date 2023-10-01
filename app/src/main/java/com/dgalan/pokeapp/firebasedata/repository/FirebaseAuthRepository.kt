@@ -8,6 +8,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+private const val ERROR_LOGIN = "An internal error has occurred. [ INVALID_LOGIN_CREDENTIALS ]"
+
 class FirebaseAuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth) :
     FirebaseAuthRepositoryContract {
 
@@ -17,7 +19,11 @@ class FirebaseAuthRepository @Inject constructor(private val firebaseAuth: Fireb
             Resource.Success(result.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.Error(e)
+            val errorMessage: String = when (e.message) {
+                ERROR_LOGIN -> "Invalid email or password"
+                else -> "Unknown error"
+            }
+            Resource.Error(e, errorMessage)
         }
     }
 
