@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Visibility
@@ -37,7 +39,8 @@ fun DSTextField(
     leadingIcon: @Composable (() -> Unit),
     keyboardType: KeyboardType,
     trailingIconOnClick: () -> Unit,
-    isPasswordVisible: Boolean = false
+    isPasswordVisible: Boolean = false,
+    onKeyboardDone: (KeyboardActionScope) -> Unit
 ) {
     val isPasswordField = keyboardType == KeyboardType.Password
     TextField(
@@ -52,8 +55,10 @@ fun DSTextField(
         leadingIcon = leadingIcon,
         textStyle = AppTypography.bodyMedium,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        keyboardActions = KeyboardActions(onDone = onKeyboardDone),
         visualTransformation = visualTransformation(isPasswordField, isPasswordVisible),
-        trailingIcon = { if (isPasswordField) TrailingIcon(trailingIconOnClick, isPasswordVisible) }
+        trailingIcon = { if (isPasswordField) TrailingIcon(trailingIconOnClick, isPasswordVisible) },
+        singleLine = true
     )
 }
 
