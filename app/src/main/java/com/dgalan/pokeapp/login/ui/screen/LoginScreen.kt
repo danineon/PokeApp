@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusDirection
@@ -57,6 +58,7 @@ import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
 import com.dgalan.pokeapp.utils.state.Resource.Success
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
@@ -64,6 +66,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     DisableBackOnInitScreen()
     Column(
         Modifier
@@ -89,7 +92,11 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
         )
         Spacer(modifier = Modifier.size(24.dp))
         LoginButton(loginOnClick = { loginViewModel.onEvent(LoginButtonClicked) })
-        RegisterButton(registerOnClick = { navController.navigate(RegisterScreen.route) })
+        RegisterButton(registerOnClick = {
+            coroutineScope.launch {
+                navController.navigate(RegisterScreen.route)
+            }
+        })
 
         when (loginFlow) {
             is Error -> {
@@ -159,7 +166,8 @@ fun EmailField(
         leadingIcon = { EmailLeadingIcon() },
         keyboardType = KeyboardType.Email,
         trailingIconOnClick = { /* No has trailing icon */ },
-        onKeyboardDone = onKeyBoardDone
+        onKeyboardDone = onKeyBoardDone,
+        isError = false
     )
 }
 
@@ -179,7 +187,8 @@ fun PasswordField(
         keyboardType = KeyboardType.Password,
         trailingIconOnClick = trailingIconOnClick,
         isPasswordVisible = isPasswordVisible,
-        onKeyboardDone = onKeyBoardDone
+        onKeyboardDone = onKeyBoardDone,
+        isError = false
     )
 }
 
