@@ -6,5 +6,9 @@ data class RegisterUIState(
     val password: String = "",
     val confirmPassword: String = "",
     val isPasswordVisible: Boolean = false,
-    val isConfirmPasswordVisible: Boolean = false
+    val isConfirmPasswordVisible: Boolean = false,
+    val isValidEmail: Boolean = true,
+    val isValidPassword: Boolean = true,
+    val isValidMatchesPassword: Boolean = true,
+    val isLoginButtonClicked1stTime: Boolean = false
 )

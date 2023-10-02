@@ -12,8 +12,10 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -76,7 +78,8 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
         EmailField(
             email = registerUIState.email,
             onEmailValueChange = { registerViewModel.onEvent(EmailChanged(it)) },
-            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) },
+            isValidaEmail = registerUIState.isValidEmail
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
@@ -85,7 +88,8 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             trailingIconOnClick = { registerViewModel.onEvent(PasswordVisibilityChanged(!registerUIState.isPasswordVisible)) },
             isPasswordVisible = registerUIState.isPasswordVisible,
             label = { PasswordLabel() },
-            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) }
+            onKeyBoardDone = { focusManager.moveFocus(FocusDirection.Down) },
+            isError = !registerUIState.isValidPassword
         )
         Spacer(modifier = Modifier.size(8.dp))
         PasswordField(
@@ -94,15 +98,16 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             trailingIconOnClick = { registerViewModel.onEvent(ConfirmPasswordVisibilityChanged(!registerUIState.isConfirmPasswordVisible)) },
             isPasswordVisible = registerUIState.isConfirmPasswordVisible,
             label = { ConfirmPasswordLabel() },
-            onKeyBoardDone = { focusManager.clearFocus() }
+            onKeyBoardDone = { focusManager.clearFocus() },
+            isError = !registerUIState.isValidMatchesPassword
         )
         Spacer(modifier = Modifier.size(24.dp))
         RegisterButton(registerOnClick = { registerViewModel.onEvent(RegisterButtonClicked) })
 
         when (registerFlow) {
             is Error -> {
-                Toast.makeText(context, (registerFlow as Error).exception.message, Toast.LENGTH_LONG).show()
                 registerViewModel.onEvent(ResetResourceState)
+                Toast.makeText(context, (registerFlow as Error).exception.message, Toast.LENGTH_LONG).show()
             }
 
             Loading -> {
@@ -110,9 +115,11 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
             }
 
             is Success -> {
-                Toast.makeText(context, "Register success", Toast.LENGTH_LONG).show()
                 registerViewModel.onEvent(ResetResourceState)
-                navController.navigateUp()
+                Toast.makeText(context, "Register success", Toast.LENGTH_LONG).show()
+                LaunchedEffect(Unit) {
+                    navController.navigateUp()
+                }
             }
 
             Idle -> {
@@ -135,7 +142,8 @@ fun NameField(
         leadingIcon = { NameLeadingIcon() },
         keyboardType = KeyboardType.Email,
         trailingIconOnClick = { /* No has trailing icon */ },
-        onKeyboardDone = onKeyBoardDone
+        onKeyboardDone = onKeyBoardDone,
+        isError = false
     )
 }
 
@@ -143,16 +151,18 @@ fun NameField(
 fun EmailField(
     email: String,
     onEmailValueChange: (String) -> Unit,
-    onKeyBoardDone: (KeyboardActionScope) -> Unit
+    onKeyBoardDone: (KeyboardActionScope) -> Unit,
+    isValidaEmail: Boolean
 ) {
     DSTextField(
         inputText = email,
         onValueChange = onEmailValueChange,
         label = { EmailLabel() },
-        leadingIcon = { EmailLeadingIcon() },
+        leadingIcon = { EmailLeadingIcon(!isValidaEmail) },
         keyboardType = KeyboardType.Email,
         trailingIconOnClick = { /* No has trailing icon */ },
-        onKeyboardDone = onKeyBoardDone
+        onKeyboardDone = onKeyBoardDone,
+        isError = !isValidaEmail
     )
 }
 
@@ -163,17 +173,19 @@ fun PasswordField(
     trailingIconOnClick: () -> Unit,
     isPasswordVisible: Boolean,
     label: @Composable () -> Unit,
-    onKeyBoardDone: (KeyboardActionScope) -> Unit
+    onKeyBoardDone: (KeyboardActionScope) -> Unit,
+    isError: Boolean
 ) {
     DSTextField(
         inputText = password,
         onValueChange = onPasswordValueChange,
         label = label,
-        leadingIcon = { PasswordLeadingIcon() },
+        leadingIcon = { PasswordLeadingIcon(isError) },
         keyboardType = KeyboardType.Password,
         trailingIconOnClick = trailingIconOnClick,
         isPasswordVisible = isPasswordVisible,
-        onKeyboardDone = onKeyBoardDone
+        onKeyboardDone = onKeyBoardDone,
+        isError = isError
     )
 }
 
@@ -195,20 +207,20 @@ fun NameLeadingIcon() {
 }
 
 @Composable
-fun EmailLeadingIcon() {
+fun EmailLeadingIcon(isError: Boolean) {
     Icon(
         imageVector = Outlined.Email,
         contentDescription = stringResource(string.email_icon),
-        tint = Color.White
+        tint = Color.White.takeIf { !isError } ?: MaterialTheme.colorScheme.error
     )
 }
 
 @Composable
-fun PasswordLeadingIcon() {
+fun PasswordLeadingIcon(isError: Boolean) {
     Icon(
         imageVector = Outlined.Key,
         contentDescription = stringResource(string.password_icon),
-        tint = Color.White
+        tint = Color.White.takeIf { !isError } ?: MaterialTheme.colorScheme.error
     )
 }
 
