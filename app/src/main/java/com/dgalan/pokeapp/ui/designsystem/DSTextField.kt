@@ -40,7 +40,8 @@ fun DSTextField(
     keyboardType: KeyboardType,
     trailingIconOnClick: () -> Unit,
     isPasswordVisible: Boolean = false,
-    onKeyboardDone: (KeyboardActionScope) -> Unit
+    onKeyboardDone: (KeyboardActionScope) -> Unit,
+    isError: Boolean
 ) {
     val isPasswordField = keyboardType == KeyboardType.Password
     TextField(
@@ -58,7 +59,8 @@ fun DSTextField(
         keyboardActions = KeyboardActions(onDone = onKeyboardDone),
         visualTransformation = visualTransformation(isPasswordField, isPasswordVisible),
         trailingIcon = { if (isPasswordField) TrailingIcon(trailingIconOnClick, isPasswordVisible) },
-        singleLine = true
+        singleLine = true,
+        isError = isError
     )
 }
 
@@ -97,7 +99,9 @@ private fun textFieldColors(): TextFieldColors {
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         focusedTextColor = Color.White,
-        unfocusedTextColor = Color.White
+        unfocusedTextColor = Color.White,
+        errorIndicatorColor = Color.Transparent,
+        errorContainerColor = Color(0xFFE4C0C0)
     )
 }
 
