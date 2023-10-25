@@ -9,6 +9,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 private const val ERROR_LOGIN = "An internal error has occurred. [ INVALID_LOGIN_CREDENTIALS ]"
+private const val EMPTY_CREDENTIALS = "Given String is empty or null"
 
 class FirebaseAuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth) :
     FirebaseAuthRepositoryContract {
@@ -21,6 +22,7 @@ class FirebaseAuthRepository @Inject constructor(private val firebaseAuth: Fireb
             e.printStackTrace()
             val errorMessage: String = when (e.message) {
                 ERROR_LOGIN -> "Invalid email or password"
+                EMPTY_CREDENTIALS -> "Email and Password cannot be empty"
                 else -> "Unknown error"
             }
             Resource.Error(e, errorMessage)
