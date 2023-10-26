@@ -16,8 +16,8 @@ import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusDirection
@@ -58,7 +58,6 @@ import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
 import com.dgalan.pokeapp.utils.state.Resource.Success
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
@@ -66,7 +65,6 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     DisableBackOnInitScreen()
     Column(
         Modifier
@@ -92,16 +90,14 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
         )
         Spacer(modifier = Modifier.size(24.dp))
         LoginButton(loginOnClick = { loginViewModel.onEvent(LoginButtonClicked) })
-        RegisterButton(registerOnClick = {
-            coroutineScope.launch {
-                navController.navigate(RegisterScreen.route)
-            }
-        })
+        RegisterButton(registerOnClick = { navController.navigate(RegisterScreen.route) })
 
         when (loginFlow) {
             is Error -> {
-                Toast.makeText(context, (loginFlow as Error).errorMessage, Toast.LENGTH_LONG).show()
-                loginViewModel.onEvent(ResetResourceState)
+                LaunchedEffect(key1 = loginFlow) {
+                    Toast.makeText(context, (loginFlow as Error).errorMessage, Toast.LENGTH_LONG).show()
+                    loginViewModel.onEvent(ResetResourceState)
+                }
             }
 
             is Loading -> {
@@ -109,8 +105,10 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
             }
 
             is Success -> {
-                Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
-                loginViewModel.onEvent(ResetResourceState)
+                LaunchedEffect(key1 = loginFlow) {
+                    Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
+                    loginViewModel.onEvent(ResetResourceState)
+                }
             }
 
             is Idle -> {

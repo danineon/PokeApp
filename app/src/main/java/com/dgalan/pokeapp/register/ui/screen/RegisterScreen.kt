@@ -106,23 +106,25 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
 
         when (registerFlow) {
             is Error -> {
-                registerViewModel.onEvent(ResetResourceState)
-                Toast.makeText(context, (registerFlow as Error).exception.message, Toast.LENGTH_LONG).show()
+                LaunchedEffect(key1 = registerFlow) {
+                    registerViewModel.onEvent(ResetResourceState)
+                    Toast.makeText(context, (registerFlow as Error).exception.message, Toast.LENGTH_LONG).show()
+                }
             }
 
-            Loading -> {
+            is Loading -> {
                 DSLoadingDialog()
             }
 
             is Success -> {
-                registerViewModel.onEvent(ResetResourceState)
-                Toast.makeText(context, "Register success", Toast.LENGTH_LONG).show()
-                LaunchedEffect(Unit) {
+                LaunchedEffect(key1 = registerFlow) {
+                    registerViewModel.onEvent(ResetResourceState)
+                    Toast.makeText(context, "Register success", Toast.LENGTH_LONG).show()
                     navController.navigateUp()
                 }
             }
 
-            Idle -> {
+            is Idle -> {
                 /* do nothing */
             }
         }
