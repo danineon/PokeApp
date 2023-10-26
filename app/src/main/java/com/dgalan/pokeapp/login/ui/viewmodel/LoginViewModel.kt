@@ -55,10 +55,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun loginUserInFirebase(email: String, password: String) =
+    private fun loginUserInFirebase(email: String, password: String) {
         viewModelScope.launch(ioDispatcher) {
             _loginFlow.value = Resource.Loading
             val result = firebaseAuthRepository.loginUserInFirebase(email, password)
             _loginFlow.value = result
         }
+    }
 }

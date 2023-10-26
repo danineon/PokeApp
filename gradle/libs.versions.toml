@@ -16,6 +16,7 @@ kotlinJvm = "1.9.10"
 lifecycle-runtime-ktx = "2.6.2"
 lottieCompose = "6.1.0"
 material-icons-extended = "1.5.4"
+mockk = "1.13.8"
 navigationCompose = "2.7.4"
 org-jetbrains-kotlin-android = "1.9.10"
 version-catalog-update = "0.8.1"
@@ -39,6 +40,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 material3 = { module = "androidx.compose.material3:material3" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 ui = { module = "androidx.compose.ui:ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
