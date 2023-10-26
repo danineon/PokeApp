@@ -143,10 +143,11 @@ class RegisterViewModel @Inject constructor(
     private fun isValidEmail(): Boolean =
         Patterns.EMAIL_ADDRESS.matcher(registerUIState.value.email.trim()).matches()
 
-    private fun registerUserInFirebase(name: String, email: String, password: String) =
+    private fun registerUserInFirebase(name: String, email: String, password: String) {
         viewModelScope.launch(ioDispatcher) {
             _registerFlow.value = Resource.Loading
             val result = firebaseAuthRepository.registerUserInFirebase(name, email, password)
             _registerFlow.value = result
         }
+    }
 }
