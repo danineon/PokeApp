@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.register.ui.screen
+package com.dgalan.pokeapp.authetication.ui.register.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -31,15 +31,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dgalan.pokeapp.R.string
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ConfirmPasswordChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ConfirmPasswordVisibilityChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.EmailChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.NameChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.PasswordChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.PasswordVisibilityChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.RegisterButtonClicked
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ResetResourceState
-import com.dgalan.pokeapp.register.ui.viewmodel.RegisterViewModel
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ConfirmPasswordChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ConfirmPasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.EmailChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.NameChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.PasswordChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.PasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.RegisterButtonClicked
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.ui.register.viewmodel.RegisterViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSButton
 import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSText
@@ -57,6 +57,7 @@ fun RegisterScreen(navController: NavController, registerViewModel: RegisterView
     val registerFlow by registerViewModel.registerFlow.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+
     DisableBackOnInitScreen()
     Column(
         Modifier

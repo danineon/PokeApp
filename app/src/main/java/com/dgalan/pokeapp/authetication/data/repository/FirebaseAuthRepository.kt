@@ -1,6 +1,5 @@
-package com.dgalan.pokeapp.firebasedata.repository
+package com.dgalan.pokeapp.authetication.data.repository
 
-import com.dgalan.pokeapp.firebasedata.FirebaseAuthRepositoryContract
 import com.dgalan.pokeapp.utils.state.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

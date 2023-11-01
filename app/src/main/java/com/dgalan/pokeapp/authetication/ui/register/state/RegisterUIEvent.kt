@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.register.ui.state
+package com.dgalan.pokeapp.authetication.ui.register.state
 
 sealed class RegisterUIEvent {
     data class NameChanged(val name: String) : RegisterUIEvent()

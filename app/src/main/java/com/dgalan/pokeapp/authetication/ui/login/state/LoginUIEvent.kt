@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.login.ui.state
+package com.dgalan.pokeapp.authetication.ui.login.state
 
 sealed class LoginUIEvent {
     data class EmailChanged(val email: String) : LoginUIEvent()

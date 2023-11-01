@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.login.ui.screen
+package com.dgalan.pokeapp.authetication.ui.login.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -43,15 +43,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dgalan.pokeapp.R
 import com.dgalan.pokeapp.R.string
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.EmailChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.LoginButtonClicked
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordVisibilityChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.ResetResourceState
-import com.dgalan.pokeapp.login.ui.viewmodel.LoginViewModel
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.EmailChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.LoginButtonClicked
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.PasswordChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.PasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.ui.login.viewmodel.LoginViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSButton
 import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
+import com.dgalan.pokeapp.ui.navigation.Screens.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.RegisterScreen
 import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.state.Resource.Error
@@ -65,6 +66,7 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     val loginFlow by loginViewModel.loginFlow.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+
     DisableBackOnInitScreen()
     Column(
         Modifier
@@ -106,8 +108,9 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
 
             is Success -> {
                 LaunchedEffect(key1 = loginFlow) {
-                    Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
                     loginViewModel.onEvent(ResetResourceState)
+                    Toast.makeText(context, "Login success", Toast.LENGTH_LONG).show()
+                    navController.navigate(PokemonScreen.route)
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.dgalan.pokeapp.login.ui.state
+package com.dgalan.pokeapp.authetication.ui.login.state
 
 data class LoginUIState(
     val email: String = "",
