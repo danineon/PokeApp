@@ -1,11 +1,12 @@
 package com.dgalan.pokeapp.login.ui.viewmodel
 
-import com.dgalan.pokeapp.firebasedata.repository.FirebaseAuthRepository
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.EmailChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.LoginButtonClicked
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.PasswordVisibilityChanged
-import com.dgalan.pokeapp.login.ui.state.LoginUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.data.repository.FirebaseAuthRepository
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.EmailChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.LoginButtonClicked
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.PasswordChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.PasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.login.state.LoginUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.ui.login.viewmodel.LoginViewModel
 import com.dgalan.pokeapp.utils.state.Resource
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.google.firebase.auth.FirebaseUser
