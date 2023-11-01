@@ -19,4 +19,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="person_icon">Person Icon</string>
     <string name="name">Name</string>
+    <string name="pokemon_image">Pokemon image</string>
+    <string name="pokeball_image">Pokeball image</string>
 </resources>

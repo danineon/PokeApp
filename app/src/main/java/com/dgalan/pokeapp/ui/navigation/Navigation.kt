@@ -12,9 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dgalan.pokeapp.R.drawable
-import com.dgalan.pokeapp.login.ui.screen.LoginScreen
-import com.dgalan.pokeapp.register.ui.screen.RegisterScreen
+import com.dgalan.pokeapp.authetication.ui.login.screen.LoginScreen
+import com.dgalan.pokeapp.authetication.ui.register.screen.RegisterScreen
+import com.dgalan.pokeapp.pokemons.ui.screen.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.LoginScreen
+import com.dgalan.pokeapp.ui.navigation.Screens.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.RegisterScreen
 
 private const val ANIMATION_TRANSITION_DURATION = 700
@@ -24,7 +26,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = LoginScreen.route
+        startDestination = PokemonScreen.route
     ) {
         composable(
             route = LoginScreen.route,
@@ -43,6 +45,15 @@ fun Navigation() {
             popExitTransition = { popExitTransitionDown() }
         ) {
             RegisterScreen(navController)
+        }
+        composable(
+            route = PokemonScreen.route,
+            enterTransition = { enterTransitionUp() },
+            exitTransition = { exitTransitionUp() },
+            popEnterTransition = { popEnterTransitionDown() },
+            popExitTransition = { popExitTransitionDown() }
+        ) {
+            PokemonScreen()
         }
     }
 }
