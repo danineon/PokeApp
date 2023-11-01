@@ -1,14 +1,15 @@
 package com.dgalan.pokeapp.register.ui.viewmodel
 
-import com.dgalan.pokeapp.firebasedata.repository.FirebaseAuthRepository
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ConfirmPasswordChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ConfirmPasswordVisibilityChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.EmailChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.NameChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.PasswordChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.PasswordVisibilityChanged
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.RegisterButtonClicked
-import com.dgalan.pokeapp.register.ui.state.RegisterUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.data.repository.FirebaseAuthRepository
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ConfirmPasswordChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ConfirmPasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.EmailChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.NameChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.PasswordChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.PasswordVisibilityChanged
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.RegisterButtonClicked
+import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ResetResourceState
+import com.dgalan.pokeapp.authetication.ui.register.viewmodel.RegisterViewModel
 import com.dgalan.pokeapp.utils.state.Resource
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.google.firebase.auth.FirebaseUser
