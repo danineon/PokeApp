@@ -6,6 +6,7 @@ ben-manes = "0.49.0"
 coilCompose = "2.5.0"
 comGoogleDevtoolsKspGradlePlugin = "1.9.10-1.0.13"
 compose-bom = "2023.10.01"
+composeShimmer = "1.2.0"
 converterGson = "2.9.0"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
@@ -41,6 +42,7 @@ com-google-devtools-ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.
 com-google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 com-google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }

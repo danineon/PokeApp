@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.compose.shimmer)
     implementation(libs.coil.compose)
     ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)
