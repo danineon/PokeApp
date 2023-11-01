@@ -45,8 +45,11 @@ import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.pokemons.domain.model.PokemonResult
 import com.dgalan.pokeapp.pokemons.ui.viewmodel.PokemonViewModel
 import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.utils.forwardingPainter
 import com.dgalan.pokeapp.utils.shimmer.shimmer
 import kotlinx.coroutines.delay
+
+private const val CALL_DELAY = 1000L
 
 @Composable
 fun PokemonScreen(pokemonViewModel: PokemonViewModel = hiltViewModel()) {
@@ -54,7 +57,7 @@ fun PokemonScreen(pokemonViewModel: PokemonViewModel = hiltViewModel()) {
     var loadingShimmer by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        delay(1500)
+        delay(CALL_DELAY)
         loadingShimmer = false
     }
 
@@ -150,7 +153,19 @@ fun PokemonItem(items: LazyPagingItems<PokemonResult>, itemPosition: Int) {
                     )
                     AsyncImage(
                         modifier = Modifier.fillMaxHeight(),
-                        model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png",
+                        placeholder = forwardingPainter(
+                            painter = painterResource(id = drawable.ic_pokemon_silhouette2),
+                            colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                        ),
+                        error = forwardingPainter(
+                            painter = painterResource(id = drawable.ic_pokemon_silhouette2),
+                            colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                        ),
+                        model = if (itemPosition == 0) {
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/.png"
+                        } else {
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png"
+                        },
                         contentDescription = stringResource(string.pokemon_image)
                     )
                 }
@@ -217,12 +232,12 @@ fun PokemonShimmerItem() {
                 ) {
                     Image(
                         modifier = Modifier
-                            .height(72.dp),
+                            .height(58.dp)
+                            .offset(y = (-6).dp),
                         painter = painterResource(id = drawable.ic_pokemon_silhouette),
                         contentDescription = stringResource(string.pokeball_image),
                         colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
                     )
-                    Box(modifier = Modifier.fillMaxHeight())
                 }
             }
         }
