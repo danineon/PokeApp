@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.dgalan.pokeapp.R
-import com.dgalan.pokeapp.login.ui.screen.LoginScreen
+import com.dgalan.pokeapp.authetication.ui.login.screen.LoginScreen
 import com.dgalan.pokeapp.ui.theme.AppTypography
 
 @Composable
