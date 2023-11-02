@@ -161,11 +161,7 @@ fun PokemonItem(items: LazyPagingItems<PokemonResult>, itemPosition: Int) {
                             painter = painterResource(id = drawable.ic_pokemon_silhouette2),
                             colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
                         ),
-                        model = if (itemPosition == 0) {
-                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/.png"
-                        } else {
-                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png"
-                        },
+                        model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png",
                         contentDescription = stringResource(string.pokemon_image)
                     )
                 }
