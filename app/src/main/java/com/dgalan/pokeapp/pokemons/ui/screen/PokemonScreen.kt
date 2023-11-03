@@ -44,6 +44,7 @@ import com.dgalan.pokeapp.pokemons.ui.viewmodel.PokemonViewModel
 import com.dgalan.pokeapp.ui.theme.AppTypography
 import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.forwardingPainter
+import com.dgalan.pokeapp.utils.getPokemonImage
 import com.dgalan.pokeapp.utils.shimmer.shimmer
 import kotlinx.coroutines.delay
 
@@ -133,7 +134,7 @@ fun PokemonItem(items: LazyPagingItems<PokemonResult>, itemPosition: Int) {
                         painter = painterResource(id = drawable.ic_pokemon_silhouette2),
                         colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
                     ),
-                    model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png",
+                    model = getPokemonImage(items[itemPosition]!!.id),
                     contentDescription = stringResource(string.pokemon_image)
                 )
             }

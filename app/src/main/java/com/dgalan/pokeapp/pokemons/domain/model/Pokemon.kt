@@ -8,6 +8,7 @@ data class Pokemon(
 )
 
 data class PokemonResult(
+    val id: Int,
     val name: String,
     val url: String
 )
