@@ -2,7 +2,6 @@ package com.dgalan.pokeapp.pokemons.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -106,8 +105,7 @@ fun PokemonItem(items: LazyPagingItems<PokemonResult>, itemPosition: Int) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(8.dp)
         ) {
             Text(text = items[itemPosition]!!.name, style = AppTypography.bodyMedium)
 
@@ -160,8 +158,7 @@ fun PokemonShimmerItem() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(8.dp)
         ) {
             Box(
                 modifier = Modifier
