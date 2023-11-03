@@ -47,8 +47,6 @@ import com.dgalan.pokeapp.utils.getPokemonImage
 import com.dgalan.pokeapp.utils.shimmer.shimmer
 import kotlinx.coroutines.delay
 
-private const val CALL_DELAY = 1000L
-
 @Composable
 fun PokemonScreen(pokemonViewModel: PokemonViewModel = hiltViewModel()) {
     val pokemonPager = pokemonViewModel.pokemonPager.collectAsLazyPagingItems()
