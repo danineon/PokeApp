@@ -4,11 +4,10 @@ import com.dgalan.pokeapp.pokemons.data.api.PokemonApi
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Local
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Remote
 import com.dgalan.pokeapp.pokemons.data.model.PokemonDTO
+import com.dgalan.pokeapp.utils.LIMIT_PAGINATION_INT
 import retrofit2.Retrofit
 import java.util.Locale
 import javax.inject.Inject
-
-private const val LIMIT_PAGINATION_INT = 20
 
 class PokemonDataSource @Inject constructor(
     private val retrofit: Retrofit

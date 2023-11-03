@@ -1,14 +1,13 @@
 package com.dgalan.pokeapp.authetication.data.repository
 
+import com.dgalan.pokeapp.utils.EMPTY_CREDENTIALS
+import com.dgalan.pokeapp.utils.ERROR_LOGIN
 import com.dgalan.pokeapp.utils.state.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-
-private const val ERROR_LOGIN = "An internal error has occurred. [ INVALID_LOGIN_CREDENTIALS ]"
-private const val EMPTY_CREDENTIALS = "Given String is empty or null"
 
 class FirebaseAuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth) :
     FirebaseAuthRepositoryContract {

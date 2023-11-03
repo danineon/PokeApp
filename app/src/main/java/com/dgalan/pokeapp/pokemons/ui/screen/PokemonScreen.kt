@@ -45,11 +45,10 @@ import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.pokemons.domain.model.PokemonResult
 import com.dgalan.pokeapp.pokemons.ui.viewmodel.PokemonViewModel
 import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.forwardingPainter
 import com.dgalan.pokeapp.utils.shimmer.shimmer
 import kotlinx.coroutines.delay
-
-private const val CALL_DELAY = 1000L
 
 @Composable
 fun PokemonScreen(pokemonViewModel: PokemonViewModel = hiltViewModel()) {

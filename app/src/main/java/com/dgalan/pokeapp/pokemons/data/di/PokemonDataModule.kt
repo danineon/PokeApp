@@ -2,6 +2,7 @@ package com.dgalan.pokeapp.pokemons.data.di
 
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSource
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract
+import com.dgalan.pokeapp.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,8 +10,6 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
-private const val BASE_URL = "https://pokeapi.co/api/v2/"
 
 @InstallIn(SingletonComponent::class)
 @Module

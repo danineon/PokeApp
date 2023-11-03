@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val CALL_DELAY = 1000L
-
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
     pokemonPagingSource: PokemonPagingSource,
