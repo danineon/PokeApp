@@ -18,8 +18,7 @@ import com.dgalan.pokeapp.pokemons.ui.screen.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.LoginScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.RegisterScreen
-
-private const val ANIMATION_TRANSITION_DURATION = 700
+import com.dgalan.pokeapp.utils.ANIMATION_TRANSITION_DURATION
 
 @Composable
 fun Navigation() {

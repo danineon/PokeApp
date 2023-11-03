@@ -4,6 +4,7 @@ import com.dgalan.pokeapp.pokemons.data.api.PokemonApi
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Local
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Remote
 import com.dgalan.pokeapp.pokemons.data.model.PokemonDTO
+import com.dgalan.pokeapp.utils.LIMIT_PAGINATION_INT
 import retrofit2.Retrofit
 import java.util.Locale
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class PokemonDataSource @Inject constructor(
 ) : Remote, Local {
 
     override suspend fun getPokemonList(page: Int): PokemonDTO {
-        val response = retrofit.create(PokemonApi::class.java).getPokemonList(page)
+        val response = retrofit.create(PokemonApi::class.java).getPokemonList(page, LIMIT_PAGINATION_INT)
         val capitalizedResponse = response.copy(
             results = response.results.map { pokemonResultDTO ->
                 pokemonResultDTO.copy(

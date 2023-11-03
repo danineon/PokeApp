@@ -73,3 +73,7 @@ private val defaultOnDraw: DrawScope.(ForwardingDrawInfo) -> Unit = { info ->
         draw(size, info.alpha, info.colorFilter)
     }
 }
+
+fun getPokemonImage(pokemonId: Int): String {
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png"
+}
