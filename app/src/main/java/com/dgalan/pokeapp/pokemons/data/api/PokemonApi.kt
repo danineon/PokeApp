@@ -4,11 +4,11 @@ import com.dgalan.pokeapp.pokemons.data.model.PokemonDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface PokemonApi {
+fun interface PokemonApi {
 
     @GET("pokemon")
     suspend fun getPokemonList(
         @Query("offset") page: Int,
-        @Query("limit") limit: Int = 20
+        @Query("limit") limit: Int
     ): PokemonDTO
 }

@@ -8,12 +8,14 @@ import retrofit2.Retrofit
 import java.util.Locale
 import javax.inject.Inject
 
+private const val LIMIT_PAGINATION_INT = 20
+
 class PokemonDataSource @Inject constructor(
     private val retrofit: Retrofit
 ) : Remote, Local {
 
     override suspend fun getPokemonList(page: Int): PokemonDTO {
-        val response = retrofit.create(PokemonApi::class.java).getPokemonList(page)
+        val response = retrofit.create(PokemonApi::class.java).getPokemonList(page, LIMIT_PAGINATION_INT)
         val capitalizedResponse = response.copy(
             results = response.results.map { pokemonResultDTO ->
                 pokemonResultDTO.copy(
