@@ -111,60 +111,36 @@ fun PokemonItem(items: LazyPagingItems<PokemonResult>, itemPosition: Int) {
                 .padding(8.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Text(text = items[itemPosition]!!.name, style = AppTypography.bodyMedium)
+
+            Box(
+                Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
             ) {
-                Text(text = items[itemPosition]!!.name, style = AppTypography.bodyMedium)
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = "#${itemPosition}",
-                    style = AppTypography.labelMedium
+                Image(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .offset(x = 12.dp, y = 12.dp)
+                        .rotate(-14.3f)
+                        .align(Alignment.CenterEnd),
+                    painter = painterResource(id = drawable.ic_pokeball_byn),
+                    contentDescription = stringResource(string.pokeball_image)
+                )
+                AsyncImage(
+                    modifier = Modifier.fillMaxHeight(),
+                    placeholder = forwardingPainter(
+                        painter = painterResource(id = drawable.ic_pokemon_silhouette2),
+                        colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                    ),
+                    error = forwardingPainter(
+                        painter = painterResource(id = drawable.ic_pokemon_silhouette2),
+                        colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                    ),
+                    model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png",
+                    contentDescription = stringResource(string.pokemon_image)
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Card {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 6.dp),
-                        text = "Fire",
-                        style = AppTypography.labelMedium
-                    )
-                }
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .offset(x = 12.dp, y = 12.dp)
-                            .rotate(-14.3f),
-                        painter = painterResource(id = drawable.ic_pokeball_byn),
-                        contentDescription = stringResource(string.pokeball_image)
-                    )
-                    AsyncImage(
-                        modifier = Modifier.fillMaxHeight(),
-                        placeholder = forwardingPainter(
-                            painter = painterResource(id = drawable.ic_pokemon_silhouette2),
-                            colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
-                        ),
-                        error = forwardingPainter(
-                            painter = painterResource(id = drawable.ic_pokemon_silhouette2),
-                            colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
-                        ),
-                        model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${itemPosition + 1}.png",
-                        contentDescription = stringResource(string.pokemon_image)
-                    )
-                }
-            }
+
         }
     }
 }
