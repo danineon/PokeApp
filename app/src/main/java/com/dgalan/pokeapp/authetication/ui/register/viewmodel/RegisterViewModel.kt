@@ -14,6 +14,7 @@ import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.Passwo
 import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.RegisterButtonClicked
 import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIEvent.ResetResourceState
 import com.dgalan.pokeapp.authetication.ui.register.state.RegisterUIState
+import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.di.CoroutineDispatcherModule.IoDispatcher
 import com.dgalan.pokeapp.utils.state.Resource
 import com.dgalan.pokeapp.utils.state.Resource.Idle
@@ -26,8 +27,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val CALL_DELAY = 1000L
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(

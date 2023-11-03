@@ -2,8 +2,6 @@ package com.dgalan.pokeapp.pokemons.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.dgalan.pokeapp.pokemons.data.paging.PokemonPagingSource
 import com.dgalan.pokeapp.pokemons.domain.model.PokemonResult
@@ -16,8 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val CALL_DELAY = 1000L
-
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
     pokemonPagingSource: PokemonPagingSource,
@@ -29,10 +25,7 @@ class PokemonViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            Pager(
-                config = PagingConfig(pageSize = 20),
-                pagingSourceFactory = { pokemonPagingSource }
-            ).flow.collect { pagingData ->
+            pokemonPagingSource.getPokemonList().collect { pagingData ->
                 _pokemonPager.value = pagingData
             }
         }
