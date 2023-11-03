@@ -6,15 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -150,7 +147,8 @@ fun PokemonShimmerItem() {
     Card(
         modifier = Modifier
             .height(135.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .shimmer(500),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2B2B2B),
             contentColor = Color.White
@@ -161,55 +159,39 @@ fun PokemonShimmerItem() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
-                .shimmer(600),
+                .padding(8.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(start = 1.dp, top = 4.dp)
-                        .width(90.dp)
-                        .height(15.dp)
-                        .background(
-                            color = Color(0xFF6B6B6B),
-                            shape = RoundedCornerShape(3.dp),
-                        )
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Box(
-                    modifier = Modifier
-                        .width(51.dp)
-                        .height(16.dp)
-                        .background(
-                            color = Color(0xFF6B6B6B),
-                            shape = RoundedCornerShape(7.dp),
-                        )
-                )
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .height(58.dp)
-                            .offset(y = (-6).dp),
-                        painter = painterResource(id = drawable.ic_pokemon_silhouette),
-                        contentDescription = stringResource(string.pokeball_image),
-                        colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                    .padding(start = 1.dp, top = 4.dp)
+                    .width(90.dp)
+                    .height(15.dp)
+                    .background(
+                        color = Color(0xFF6B6B6B),
+                        shape = RoundedCornerShape(3.dp),
                     )
-                }
+            )
+            Box(
+                Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .offset(x = 12.dp, y = 12.dp)
+                        .rotate(-14.3f)
+                        .align(Alignment.CenterEnd),
+                    painter = painterResource(id = drawable.ic_pokeball_byn),
+                    contentDescription = stringResource(string.pokeball_image)
+                )
+                Image(
+                    modifier = Modifier
+                        .height(58.dp),
+                    painter = painterResource(id = drawable.ic_pokemon_silhouette),
+                    contentDescription = stringResource(string.pokeball_image),
+                    colorFilter = ColorFilter.tint(Color(0xFF6B6B6B))
+                )
             }
         }
     }
@@ -218,27 +200,5 @@ fun PokemonShimmerItem() {
 @Preview(showSystemUi = true)
 @Composable
 fun PokemonScreenPrev() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Black)
-    )
-    {
-        Box(
-            modifier = Modifier
-                .width(51.dp)
-                .height(16.dp)
-                .background(
-                    color = Color.Blue,
-                    shape = RoundedCornerShape(7.dp),
-                )
-        )
-        Card {
-            Text(
-                modifier = Modifier.padding(horizontal = 6.dp),
-                text = "Water",
-                style = AppTypography.labelMedium
-            )
-        }
-    }
+    PokemonShimmerItem()
 }
