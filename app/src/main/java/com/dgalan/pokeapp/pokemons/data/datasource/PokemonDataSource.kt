@@ -5,8 +5,8 @@ import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Loc
 import com.dgalan.pokeapp.pokemons.data.datasource.PokemonDataSourceContract.Remote
 import com.dgalan.pokeapp.pokemons.data.model.PokemonDTO
 import com.dgalan.pokeapp.utils.LIMIT_PAGINATION_INT
+import com.dgalan.pokeapp.utils.toCapitalize
 import retrofit2.Retrofit
-import java.util.Locale
 import javax.inject.Inject
 
 class PokemonDataSource @Inject constructor(
@@ -18,20 +18,10 @@ class PokemonDataSource @Inject constructor(
         val capitalizedResponse = response.copy(
             results = response.results.map { pokemonResultDTO ->
                 pokemonResultDTO.copy(
-                    name = capitalizePokemonName(pokemonResultDTO.name)
+                    name = pokemonResultDTO.name.toCapitalize()
                 )
             }
         )
         return capitalizedResponse
-    }
-}
-
-private fun capitalizePokemonName(name: String): String {
-    return name.replaceFirstChar { firstChar ->
-        if (firstChar.isLowerCase()) {
-            firstChar.titlecase(Locale.getDefault())
-        } else {
-            firstChar.toString()
-        }
     }
 }

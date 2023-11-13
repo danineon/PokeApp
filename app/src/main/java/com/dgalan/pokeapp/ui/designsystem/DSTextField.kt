@@ -54,7 +54,7 @@ fun DSTextField(
         shape = RoundedCornerShape(20.dp),
         label = label,
         leadingIcon = leadingIcon,
-        textStyle = AppTypography.bodyMedium,
+        textStyle = AppTypography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         keyboardActions = KeyboardActions(onDone = onKeyboardDone),
         visualTransformation = visualTransformation(isPasswordField, isPasswordVisible),
