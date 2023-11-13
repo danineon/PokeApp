@@ -41,7 +41,7 @@ fun DSButton(
     ) {
         Text(
             text = text,
-            style = AppTypography.bodyMedium,
+            style = AppTypography.bodyLarge,
         )
     }
 }

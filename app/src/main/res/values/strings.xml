@@ -21,4 +21,7 @@
     <string name="name">Name</string>
     <string name="pokemon_image">Pokemon image</string>
     <string name="pokeball_image">Pokeball image</string>
+    <string name="pokemon_type">Pokemon type</string>
+    <string name="unknown_error_loading_the_pokemon_detail">Unknown error loading the pokemon detail</string>
+    <string name="pokemonid_can_t_be_null">PokemonId can\'t be null because PokemonDetail Screen always needs an id</string>
 </resources>

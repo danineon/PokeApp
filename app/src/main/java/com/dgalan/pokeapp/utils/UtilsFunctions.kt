@@ -75,5 +75,5 @@ private val defaultOnDraw: DrawScope.(ForwardingDrawInfo) -> Unit = { info ->
 }
 
 fun getPokemonImage(pokemonId: Int): String {
-    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png"
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png"
 }
