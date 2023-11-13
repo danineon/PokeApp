@@ -61,8 +61,8 @@ val AppTypography = Typography(
     bodyMedium = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 14.sp,
+        letterSpacing = 0.2.sp
     ),
     bodySmall = TextStyle(
         fontFamily = Montserrat,
