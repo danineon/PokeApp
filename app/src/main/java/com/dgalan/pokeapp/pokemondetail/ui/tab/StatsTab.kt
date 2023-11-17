@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.dgalan.pokeapp.pokemondetail.ui.state.PokemonDetailUIState
+import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSStat
 
 @Composable
-fun StatsTab(pokemonDetailUIState: PokemonDetailUIState) {
-    val statsList = pokemonDetailUIState.run {
+fun StatsTab(state: PokemonDetailViewModel.UiState) {
+    val statsList = state.run {
         listOf(
             Triple("PS", baseStats[0], highlights[0]),
             Triple("Attack", baseStats[1], highlights[1]),
@@ -41,7 +41,7 @@ fun StatsTab(pokemonDetailUIState: PokemonDetailUIState) {
 @Composable
 fun StatsTabPrev() {
     StatsTab(
-        pokemonDetailUIState = PokemonDetailUIState(
+        state = PokemonDetailViewModel.UiState(
             id = 1,
             name = "Bulbasaur",
             baseStats = listOf("45", "49", "49", "65", "65", "45"),

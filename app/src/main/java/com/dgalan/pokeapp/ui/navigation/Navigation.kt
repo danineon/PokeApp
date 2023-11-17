@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dgalan.pokeapp.R.drawable
-import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.authetication.ui.login.screen.LoginScreen
 import com.dgalan.pokeapp.authetication.ui.register.screen.RegisterScreen
 import com.dgalan.pokeapp.pokemondetail.ui.screen.PokemonDetailScreen
@@ -67,10 +65,8 @@ fun Navigation() {
             exitTransition = { exitTransitionUp() },
             popEnterTransition = { popEnterTransitionDown() },
             popExitTransition = { popExitTransitionDown() }
-        ) { backStackEntry ->
-            val pokemonId = backStackEntry.arguments?.getInt("pokemonId")
-            requireNotNull(pokemonId) { stringResource(string.pokemonid_can_t_be_null) }
-            PokemonDetailScreen(pokemonId = pokemonId)
+        ) {
+            PokemonDetailScreen()
         }
     }
 }

@@ -19,7 +19,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,34 +38,24 @@ import coil.compose.AsyncImage
 import com.dgalan.pokeapp.R.drawable
 import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.pokemons.domain.model.PokemonResult
-import com.dgalan.pokeapp.pokemons.ui.state.PokemonUIEvent.IsShimmerShown
 import com.dgalan.pokeapp.pokemons.ui.viewmodel.PokemonViewModel
 import com.dgalan.pokeapp.ui.navigation.Screens.PokemonDetailScreen
 import com.dgalan.pokeapp.ui.theme.AppTypography
-import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.forwardingPainter
 import com.dgalan.pokeapp.utils.getPokemonImage
 import com.dgalan.pokeapp.utils.shimmer.shimmer
-import kotlinx.coroutines.delay
 
 @Composable
 fun PokemonScreen(
     navController: NavController,
     pokemonViewModel: PokemonViewModel = hiltViewModel()
 ) {
+    val state by pokemonViewModel.state.collectAsStateWithLifecycle()
     val pokemonPager = pokemonViewModel.pokemonPager.collectAsLazyPagingItems()
-    val shimmerShown by pokemonViewModel.isShimmerShown.collectAsStateWithLifecycle()
-
-    LaunchedEffect(shimmerShown) {
-        if (!shimmerShown) {
-            delay(CALL_DELAY)
-            pokemonViewModel.onEvent(IsShimmerShown)
-        }
-    }
 
     PokemonLazyVerticalGrid(
-        pokemonPager,
-        shimmerShown,
+        pokemonPager = pokemonPager,
+        loading = state.loading,
         onItemClick = { itemPosition ->
             navController.navigate(PokemonDetailScreen.route + "/${pokemonPager[itemPosition]!!.id}")
         }
@@ -76,10 +65,10 @@ fun PokemonScreen(
 @Composable
 fun PokemonLazyVerticalGrid(
     pokemonPager: LazyPagingItems<PokemonResult>,
-    shimmerShown: Boolean,
+    loading: Boolean,
     onItemClick: (itemPosition: Int) -> Unit
 ) {
-    if (!shimmerShown) {
+    if (loading) {
         Column(modifier = Modifier.fillMaxSize()) {
             LazyVerticalGrid(
                 contentPadding = PaddingValues(8.dp),

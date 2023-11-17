@@ -1,15 +1,15 @@
 package com.dgalan.pokeapp.pokemondetail.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract.Repository
-import com.dgalan.pokeapp.pokemondetail.ui.state.PokemonDetailUIEvent
-import com.dgalan.pokeapp.pokemondetail.ui.state.PokemonDetailUIEvent.InitPokemonDetail
-import com.dgalan.pokeapp.pokemondetail.ui.state.PokemonDetailUIState
+import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.di.CoroutineDispatcherModule.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,29 +20,39 @@ import javax.inject.Inject
 class PokemonDetailViewModel @Inject constructor(
     private val pokemonDetailRepository: Repository,
     private val getHighlightsStatsUseCase: DomainContract.UseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _pokemonDetailUIState = MutableStateFlow(PokemonDetailUIState())
-    val pokemonDetailUIState: StateFlow<PokemonDetailUIState> = _pokemonDetailUIState.asStateFlow()
+    private val pokemonId = savedStateHandle["pokemonId"] ?: 0
 
-    fun onEvent(event: PokemonDetailUIEvent) {
-        when (event) {
-            is InitPokemonDetail -> {
-                viewModelScope.launch(ioDispatcher) {
-                    val pokemonDetail = pokemonDetailRepository.getPokemonDetail(event.pokemonId)
-                    with(pokemonDetail) {
-                        _pokemonDetailUIState.value = _pokemonDetailUIState.value.copy(
-                            id = id,
-                            name = name,
-                            baseStats = stats.map { it.baseStat.toString() },
-                            highlights = getHighlightsStatsUseCase.getHighlightsStats(stats),
-                            types = types.map { it.type.name }
-                        )
-                    }
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
-                }
+    init {
+        viewModelScope.launch(ioDispatcher) {
+            _state.value = _state.value.copy(loading = true)
+            delay(CALL_DELAY)
+            val pokemonDetail = pokemonDetailRepository.getPokemonDetail(pokemonId)
+            with(pokemonDetail) {
+                _state.value = _state.value.copy(
+                    id = id,
+                    name = name,
+                    baseStats = stats.map { it.baseStat.toString() },
+                    highlights = getHighlightsStatsUseCase.getHighlightsStats(stats),
+                    types = types.map { it.type.name }
+                )
             }
+            _state.value = _state.value.copy(loading = false)
         }
     }
+
+    data class UiState(
+        val id: Int = 0,
+        val name: String = "",
+        val baseStats: List<String> = emptyList(),
+        val highlights: List<Boolean> = emptyList(),
+        val types: List<String> = emptyList(),
+        val loading: Boolean = false
+    )
 }

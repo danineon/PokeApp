@@ -21,7 +21,6 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -34,9 +33,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.dgalan.pokeapp.R.string
-import com.dgalan.pokeapp.pokemondetail.ui.state.PokemonDetailUIEvent.InitPokemonDetail
 import com.dgalan.pokeapp.pokemondetail.ui.tab.StatsTab
 import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel
+import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSPokemonType
 import com.dgalan.pokeapp.ui.designsystem.DSText
 import com.dgalan.pokeapp.ui.theme.AppTypography
@@ -47,10 +46,7 @@ data class TabItem(val title: String)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PokemonDetailScreen(
-    pokemonDetailViewModel: PokemonDetailViewModel = hiltViewModel(),
-    pokemonId: Int
-) {
+fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel = hiltViewModel()) {
     val tabItems = listOf(
         TabItem("Stats"),
         TabItem("Evolutions"),
@@ -58,15 +54,15 @@ fun PokemonDetailScreen(
         TabItem("Forms"),
         TabItem("Items")
     )
-    val pokemonDetailUIState by pokemonDetailViewModel.pokemonDetailUIState.collectAsStateWithLifecycle()
+    val state by pokemonDetailViewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState { tabItems.size }
 
-    LaunchedEffect(Unit) {
-        pokemonDetailViewModel.onEvent(InitPokemonDetail(pokemonId))
+    if (state.loading) {
+        DSLoadingDialog()
     }
 
-    if (pokemonDetailUIState.id != 0) {
+    if (state.id != 0) {
         Column(
             Modifier
                 .fillMaxSize()
@@ -75,14 +71,14 @@ fun PokemonDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(64.dp))
-            DSText(text = pokemonDetailUIState.name, style = AppTypography.displaySmall)
+            DSText(text = state.name, style = AppTypography.displaySmall)
             AsyncImage(
                 modifier = Modifier.height(250.dp),
-                model = getPokemonImage(pokemonId),
+                model = getPokemonImage(state.id),
                 contentDescription = stringResource(string.pokemon_image)
             )
             Row {
-                pokemonDetailUIState.types.forEach { type ->
+                state.types.forEach { type ->
                     DSPokemonType(type = type)
                     Spacer(modifier = Modifier.width(8.dp))
                 }
@@ -116,7 +112,7 @@ fun PokemonDetailScreen(
                     .weight(1f)
             ) { index ->
                 when (index) {
-                    0 -> StatsTab(pokemonDetailUIState)
+                    0 -> StatsTab(state)
                     else -> {
                         DSText(
                             text = tabItems[index].title,
@@ -157,5 +153,5 @@ private fun CustomIndicator(
 @Preview(showBackground = true)
 @Composable
 fun PokemonDetailScreenPreview() {
-    PokemonDetailScreen(pokemonId = 1)
+    PokemonDetailScreen()
 }
