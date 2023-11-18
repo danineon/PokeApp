@@ -35,10 +35,10 @@ import coil.compose.AsyncImage
 import com.dgalan.pokeapp.R.string
 import com.dgalan.pokeapp.pokemondetail.ui.tab.StatsTab
 import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel
-import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSPokemonType
 import com.dgalan.pokeapp.ui.designsystem.DSText
 import com.dgalan.pokeapp.ui.theme.AppTypography
+import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.getPokemonImage
 import kotlinx.coroutines.launch
 
@@ -58,69 +58,69 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel = hiltVie
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState { tabItems.size }
 
-    if (state.loading) {
-        DSLoadingDialog()
-    }
+    DisableBackOnInitScreen()
 
-    if (state.id != 0) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .background(Color(0xFF111111))
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(64.dp))
-            DSText(text = state.name, style = AppTypography.displaySmall)
-            AsyncImage(
-                modifier = Modifier.height(250.dp),
-                model = getPokemonImage(state.id),
-                contentDescription = stringResource(string.pokemon_image)
-            )
-            Row {
-                state.types.forEach { type ->
-                    DSPokemonType(type = type)
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-            ScrollableTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                containerColor = Color.Transparent,
-                indicator = { tabPositions -> CustomIndicator(tabPositions, pagerState) },
-                divider = { CustomDivider() },
-                edgePadding = 0.dp
-            ) {
-                tabItems.forEachIndexed { index, tabItem ->
-                    Tab(
-                        selected = index == pagerState.currentPage,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        unselectedContentColor = Color(0xFF777777),
-                        selectedContentColor = Color.White,
-                        text = { Text(text = tabItem.title, style = AppTypography.bodyLarge) }
-                    )
-                }
-            }
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        if (state.id != 0) {
+            Column(
+                Modifier
                     .fillMaxSize()
-                    .weight(1f)
-            ) { index ->
-                when (index) {
-                    0 -> StatsTab(state)
-                    else -> {
-                        DSText(
-                            text = tabItems[index].title,
-                            style = AppTypography.bodyLarge
+                    .background(Color(0xFF111111))
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(64.dp))
+                DSText(text = state.name, style = AppTypography.displaySmall)
+                AsyncImage(
+                    modifier = Modifier.height(250.dp),
+                    model = getPokemonImage(state.id),
+                    contentDescription = stringResource(string.pokemon_image)
+                )
+                Row {
+                    state.types.forEach { type ->
+                        DSPokemonType(type = type)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                ScrollableTabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = Color.Transparent,
+                    indicator = { tabPositions -> CustomIndicator(tabPositions, pagerState) },
+                    divider = { CustomDivider() },
+                    edgePadding = 0.dp
+                ) {
+                    tabItems.forEachIndexed { index, tabItem ->
+                        Tab(
+                            selected = index == pagerState.currentPage,
+                            onClick = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            unselectedContentColor = Color(0xFF777777),
+                            selectedContentColor = Color.White,
+                            text = { Text(text = tabItem.title, style = AppTypography.bodyLarge) }
                         )
                     }
                 }
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) { index ->
+                    when (index) {
+                        0 -> StatsTab(state)
+                        else -> {
+                            DSText(
+                                text = tabItems[index].title,
+                                style = AppTypography.bodyLarge
+                            )
+                        }
+                    }
 
+                }
             }
         }
     }

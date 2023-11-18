@@ -5,11 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract.Repository
-import com.dgalan.pokeapp.utils.CALL_DELAY
 import com.dgalan.pokeapp.utils.di.CoroutineDispatcherModule.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +30,6 @@ class PokemonDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             _state.value = _state.value.copy(loading = true)
-            delay(CALL_DELAY)
             val pokemonDetail = pokemonDetailRepository.getPokemonDetail(pokemonId)
             with(pokemonDetail) {
                 _state.value = _state.value.copy(
