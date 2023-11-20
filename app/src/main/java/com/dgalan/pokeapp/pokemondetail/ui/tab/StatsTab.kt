@@ -11,7 +11,10 @@ import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSStat
 
 @Composable
-fun StatsTab(state: PokemonDetailViewModel.UiState) {
+fun StatsTab(
+    state: PokemonDetailViewModel.UiState,
+    onAnimationPlayedEvent: () -> Unit
+) {
     val statsList = state.run {
         listOf(
             Triple("PS", baseStats[0], highlights[0]),
@@ -31,7 +34,9 @@ fun StatsTab(state: PokemonDetailViewModel.UiState) {
             DSStat(
                 stat = stat,
                 value = value,
-                highlight = highlight
+                highlight = highlight,
+                animationPlayed = state.animationPlayed,
+                onAnimationPlayedEvent = { onAnimationPlayedEvent() }
             )
         }
     }
@@ -47,6 +52,6 @@ fun StatsTabPrev() {
             baseStats = listOf("45", "49", "49", "65", "65", "45"),
             highlights = listOf(false, false, false, true, true, false),
             types = listOf("grass", "poison")
-        )
+        ), onAnimationPlayedEvent = {}
     )
 }

@@ -7,7 +7,7 @@ fun String.getIdFromUrl(): Int {
 }
 
 fun String.toLinearProgressBar(): Float {
-    return this.toFloat() / 100
+    return this.toFloat() / 255f
 }
 
 fun String.toCapitalize(): String {

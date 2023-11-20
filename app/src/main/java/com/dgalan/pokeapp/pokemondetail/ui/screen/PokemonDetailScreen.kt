@@ -38,7 +38,6 @@ import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel
 import com.dgalan.pokeapp.ui.designsystem.DSPokemonType
 import com.dgalan.pokeapp.ui.designsystem.DSText
 import com.dgalan.pokeapp.ui.theme.AppTypography
-import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.getPokemonImage
 import kotlinx.coroutines.launch
 
@@ -57,8 +56,6 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel = hiltVie
     val state by pokemonDetailViewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState { tabItems.size }
-
-    DisableBackOnInitScreen()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         if (state.id != 0) {
@@ -111,7 +108,15 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel = hiltVie
                         .weight(1f)
                 ) { index ->
                     when (index) {
-                        0 -> StatsTab(state)
+                        0 -> StatsTab(
+                            state,
+                            onAnimationPlayedEvent = {
+                                pokemonDetailViewModel.onEvent(
+                                    PokemonDetailViewModel.UiEvent.LinearProgressIndicatorAnimationPlayed
+                                )
+                            }
+                        )
+
                         else -> {
                             DSText(
                                 text = tabItems[index].title,

@@ -32,39 +32,23 @@ fun Navigation() {
         startDestination = PokemonScreen.route
     ) {
         composable(
-            route = LoginScreen.route,
-            enterTransition = { enterTransitionUp() },
-            exitTransition = { exitTransitionUp() },
-            popEnterTransition = { popEnterTransitionDown() },
-            popExitTransition = { popExitTransitionDown() }
+            route = LoginScreen.route
         ) {
             LoginScreen(navController)
         }
         composable(
-            route = RegisterScreen.route,
-            enterTransition = { enterTransitionUp() },
-            exitTransition = { exitTransitionUp() },
-            popEnterTransition = { popEnterTransitionDown() },
-            popExitTransition = { popExitTransitionDown() }
+            route = RegisterScreen.route
         ) {
             RegisterScreen(navController)
         }
         composable(
-            route = PokemonScreen.route,
-            enterTransition = { enterTransitionUp() },
-            exitTransition = { exitTransitionUp() },
-            popEnterTransition = { popEnterTransitionDown() },
-            popExitTransition = { popExitTransitionDown() }
+            route = PokemonScreen.route
         ) {
             PokemonScreen(navController)
         }
         composable(
             route = PokemonDetailScreen.route + "/{pokemonId}",
-            arguments = listOf(navArgument("pokemonId") { type = NavType.IntType }),
-            enterTransition = { enterTransitionUp() },
-            exitTransition = { exitTransitionUp() },
-            popEnterTransition = { popEnterTransitionDown() },
-            popExitTransition = { popExitTransitionDown() }
+            arguments = listOf(navArgument("pokemonId") { type = NavType.IntType })
         ) {
             PokemonDetailScreen()
         }

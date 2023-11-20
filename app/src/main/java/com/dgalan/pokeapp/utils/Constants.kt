@@ -9,6 +9,7 @@ const val CALL_DELAY = 1000L
 
 //Animations
 const val ANIMATION_TRANSITION_DURATION = 700
+const val ANIMATION_PROGRESS_DURATION = 1500
 
 // Pagination
 const val LIMIT_PAGINATION_INT = 20

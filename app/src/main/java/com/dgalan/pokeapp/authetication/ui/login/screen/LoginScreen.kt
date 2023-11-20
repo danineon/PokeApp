@@ -54,7 +54,6 @@ import com.dgalan.pokeapp.ui.designsystem.DSLoadingDialog
 import com.dgalan.pokeapp.ui.designsystem.DSTextField
 import com.dgalan.pokeapp.ui.navigation.Screens.PokemonScreen
 import com.dgalan.pokeapp.ui.navigation.Screens.RegisterScreen
-import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.state.Resource.Error
 import com.dgalan.pokeapp.utils.state.Resource.Idle
 import com.dgalan.pokeapp.utils.state.Resource.Loading
@@ -67,7 +66,6 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = h
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
-    DisableBackOnInitScreen()
     Column(
         Modifier
             .fillMaxSize()

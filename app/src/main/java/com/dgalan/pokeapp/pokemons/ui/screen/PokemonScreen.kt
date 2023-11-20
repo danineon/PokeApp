@@ -1,6 +1,5 @@
 package com.dgalan.pokeapp.pokemons.ui.screen
 
-import android.os.SystemClock
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,9 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -45,7 +41,6 @@ import com.dgalan.pokeapp.pokemons.domain.model.PokemonResult
 import com.dgalan.pokeapp.pokemons.ui.viewmodel.PokemonViewModel
 import com.dgalan.pokeapp.ui.navigation.Screens.PokemonDetailScreen
 import com.dgalan.pokeapp.ui.theme.AppTypography
-import com.dgalan.pokeapp.utils.DisableBackOnInitScreen
 import com.dgalan.pokeapp.utils.forwardingPainter
 import com.dgalan.pokeapp.utils.getPokemonImage
 import com.dgalan.pokeapp.utils.shimmer.shimmer
@@ -58,13 +53,13 @@ fun PokemonScreen(
     val state by pokemonViewModel.state.collectAsStateWithLifecycle()
     val pokemonPager = pokemonViewModel.pokemonPager.collectAsLazyPagingItems()
 
-    DisableBackOnInitScreen()
-
     PokemonLazyVerticalGrid(
         pokemonPager = pokemonPager,
         loading = state.loading,
         onItemClick = { itemPosition ->
-            navController.navigate(PokemonDetailScreen.route + "/${pokemonPager[itemPosition]!!.id}")
+            navController.navigate(PokemonDetailScreen.route + "/${pokemonPager[itemPosition]!!.id}") {
+                launchSingleTop = true
+            }
         }
     )
 }
@@ -113,7 +108,6 @@ fun PokemonItem(
     itemPosition: Int,
     onPokemonClick: () -> Unit
 ) {
-    var lastClickTime by remember { mutableLongStateOf(0L) }
 
     Card(
         modifier = Modifier
@@ -126,10 +120,7 @@ fun PokemonItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(6.dp),
         onClick = {
-            if (SystemClock.elapsedRealtime() - lastClickTime > 1000) {
-                lastClickTime = SystemClock.elapsedRealtime()
-                onPokemonClick()
-            }
+            onPokemonClick()
         }
     ) {
         Column(

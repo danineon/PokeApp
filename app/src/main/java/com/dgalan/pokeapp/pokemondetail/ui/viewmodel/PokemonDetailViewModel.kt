@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract
 import com.dgalan.pokeapp.pokemondetail.domain.DomainContract.Repository
+import com.dgalan.pokeapp.pokemondetail.ui.viewmodel.PokemonDetailViewModel.UiEvent.LinearProgressIndicatorAnimationPlayed
 import com.dgalan.pokeapp.utils.di.CoroutineDispatcherModule.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -44,12 +45,23 @@ class PokemonDetailViewModel @Inject constructor(
         }
     }
 
+    fun onEvent(event: UiEvent) {
+        when (event) {
+            is LinearProgressIndicatorAnimationPlayed -> _state.value = _state.value.copy(animationPlayed = true)
+        }
+    }
+
     data class UiState(
         val id: Int = 0,
         val name: String = "",
         val baseStats: List<String> = emptyList(),
         val highlights: List<Boolean> = emptyList(),
         val types: List<String> = emptyList(),
-        val loading: Boolean = false
+        val loading: Boolean = false,
+        val animationPlayed: Boolean = false
     )
+
+    sealed class UiEvent {
+        data object LinearProgressIndicatorAnimationPlayed : UiEvent()
+    }
 }

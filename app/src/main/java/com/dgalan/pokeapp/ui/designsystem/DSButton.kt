@@ -1,6 +1,5 @@
 package com.dgalan.pokeapp.ui.designsystem
 
-import android.os.SystemClock
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,10 +24,7 @@ fun DSButton(
     var lastClickTime by remember { mutableLongStateOf(0L) }
     Button(
         onClick = {
-            if (SystemClock.elapsedRealtime() - lastClickTime > 1000) {
-                lastClickTime = SystemClock.elapsedRealtime()
-                onClick()
-            }
+            onClick()
         },
         modifier = Modifier
             .fillMaxWidth()
